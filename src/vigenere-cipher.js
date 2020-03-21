@@ -1,12 +1,43 @@
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 class VigenereCipheringMachine {
-    encrypt() {
-        throw 'Not implemented';
-        // remove line with error and write your code here
+    constructor(type) {
+        this.type = true;
+        if (typeof type === "boolean") {
+            this.type = type;
+        }
     }
 
-    decrypt() {
-        throw 'Not implemented';
-        // remove line with error and write your code here
+    encrypt(str, key) {
+        let result = "";
+        str = str.toUpperCase();
+        let longKey = Array(Math.ceil(str.length / key.length)).fill(key).join("").toUpperCase();
+        let spaceCount = 0;
+        for (let i = 0; i < str.length; i++) {
+            if (ALPHABET.indexOf(str[i]) >= 0) {
+                result += ALPHABET[(ALPHABET.indexOf(str[i]) + ALPHABET.indexOf(longKey[i - spaceCount])) % ALPHABET.length];
+            } else {
+                result += str[i];
+                spaceCount += 1;
+            }
+        }
+        return this.type ? result : result.split("").reverse().join("");
+    }
+
+    decrypt(str, key) {
+        let result = "";
+        str = str.toUpperCase();
+        let longKey = Array(Math.ceil(str.length / key.length)).fill(key).join("").toUpperCase();
+        let spaceCount = 0;
+        for (let i = 0; i < str.length; i++) {
+            if (ALPHABET.indexOf(str[i]) >= 0) {
+                result += ALPHABET[(ALPHABET.indexOf(str[i]) + ALPHABET.length - ALPHABET.indexOf(longKey[i - spaceCount])) % ALPHABET.length];
+            } else {
+                result += str[i];
+                spaceCount += 1;
+            }
+        }
+        return this.type ? result : result.split("").reverse().join("");
     }
 }
 
